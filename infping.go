@@ -39,6 +39,8 @@ import (
 )
 
 func main() {
+	log.Printf("Start")
+
 	viper.SetDefault("influx.host", "localhost")
 	viper.SetDefault("influx.port", "8086")
 	viper.SetDefault("influx.user", "")
@@ -152,5 +154,9 @@ func main() {
 	}
 
 	log.Printf("Launching fping with hosts: %s", strings.Join(hosts, ", "))
-	runAndRead(ctx, hosts, influxClient, fpingConfig)
+	runAndReadErr := runAndRead(ctx, hosts, influxClient, fpingConfig)
+	if(runAndReadErr!=nil){
+		log.Fatalf("Fail! [%v]", runAndReadErr)
+	}
+	log.Printf("End")
 }
